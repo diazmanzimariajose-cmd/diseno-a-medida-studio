@@ -50,14 +50,14 @@ export function ControlBar(p: Props) {
           <Languages /> {p.translate ? "Hide translation" : "Translate to Spanish"}
         </Button>
       </div>
-      <div className="grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
+      <div className="grid grid-cols-5 gap-1.5 sm:gap-2 [&>button]:w-full [&>button]:min-h-14 [&>button]:whitespace-normal [&>button]:text-center [&>button]:leading-tight [&>button]:px-1.5">
         {playing ? (
-          <Button variant="control-primary" onClick={p.onPause} className="col-span-2 sm:min-w-36">
+          <Button variant="control-primary" onClick={p.onPause} >
             <Pause className="fill-current" /> Pause
           </Button>
         ) : (
-          <Button variant="control-primary" onClick={p.onPlay} className="col-span-2 sm:min-w-36">
-            <Play className="fill-current" /> {p.status === "paused" ? "Resume" : "Play conversation"}
+          <Button variant="control-primary" onClick={p.onPlay} >
+            <Play className="fill-current" /> {p.status === "paused" ? "Resume" : "Play"}
           </Button>
         )}
         <Button variant="control" onClick={p.onStop} disabled={p.status === "idle"}>

@@ -206,7 +206,10 @@ export function useConversationPlayer(lines: DialogueLine[]) {
     u.onend = after;
     u.onerror = (e) => {
       if (e.error === "interrupted" || e.error === "canceled") return;
-      after();
+      // No usable voice: keep the animation going for the time the line would take to say.
+      if (cur.current.timer) clearTimeout(cur.current.timer);
+      cur.current.ttsStart = performance.now();
+      cur.current.timer = setTimeout(after, Math.max(1500, text.length * 70));
     };
     window.speechSynthesis.speak(u);
     // Watchdog: some devices never fire "end" (no voices installed) — keep the scene moving.

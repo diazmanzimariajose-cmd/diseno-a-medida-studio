@@ -222,10 +222,10 @@ function Game() {
           </div>
         </header>
 
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
           <div
             ref={gameRef}
-            className={cn("flex flex-col gap-3", fullscreen && "h-screen bg-background p-3")}
+            className={cn("flex min-w-0 flex-col gap-3", fullscreen && "h-screen bg-background p-3")}
           >
             <Stage
               scene={scene}
@@ -268,7 +268,7 @@ function Game() {
             <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={handleUpload} />
           </div>
 
-          <aside className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-panel">
+          <aside className="flex min-w-0 flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-panel">
             <ActivityList
               conversations={conversations}
               activeId={active.id}
@@ -287,7 +287,7 @@ function Game() {
                   {Math.round(player.progress * 100)}%
                 </span>
               </div>
-              <div className="lg:max-h-[52vh] lg:overflow-y-auto lg:pr-1">
+              <div className="lg:max-h-[44vh] lg:overflow-y-auto lg:pr-1">
                 <Transcript
                   lines={lines}
                   currentIndex={player.index}
