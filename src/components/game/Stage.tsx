@@ -6,7 +6,13 @@ import femaleTalk from "@/assets/barista-female-talk.webp";
 import sceneCafe from "@/assets/scene-cafe.webp";
 import sceneBar from "@/assets/scene-bar.webp";
 import { cn } from "@/lib/utils";
-import { CHARACTERS, SCENES, type DialogueLine, type SceneId, type Speaker } from "@/lib/game/types";
+import {
+  CHARACTERS,
+  SCENES,
+  type DialogueLine,
+  type SceneId,
+  type Speaker,
+} from "@/lib/game/types";
 import type { PlayerStatus } from "@/hooks/use-conversation-player";
 import { Button } from "@/components/ui/button";
 
@@ -67,13 +73,29 @@ export function Stage(p: StageProps) {
 
       {active && p.source && (
         <div className="absolute right-3 top-3 z-20 flex items-center gap-1.5 rounded-full bg-espresso/70 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-foreground backdrop-blur-md sm:right-4 sm:top-4">
-          {p.source === "clip" ? <Mic className="size-3 text-record" /> : <Volume2 className="size-3 text-gold" />}
+          {p.source === "clip" ? (
+            <Mic className="size-3 text-record" />
+          ) : (
+            <Volume2 className="size-3 text-gold" />
+          )}
           {p.source === "clip" ? "Recorded voice" : "Auto voice"}
         </div>
       )}
 
-      <Character side="left" speaker="male" speaking={p.speaking} active={active} register={p.registerMouth} />
-      <Character side="right" speaker="female" speaking={p.speaking} active={active} register={p.registerMouth} />
+      <Character
+        side="left"
+        speaker="male"
+        speaking={p.speaking}
+        active={active}
+        register={p.registerMouth}
+      />
+      <Character
+        side="right"
+        speaker="female"
+        speaking={p.speaking}
+        active={active}
+        register={p.registerMouth}
+      />
 
       {/* Speech bubble */}
       {active && p.line && bubbleSpeaker && (
@@ -98,7 +120,9 @@ export function Stage(p: StageProps) {
                 {p.lineNumber}/{p.total}
               </span>
             </div>
-            <p className="text-xs font-semibold leading-snug sm:text-base lg:text-lg">{p.line.en}</p>
+            <p className="text-xs font-semibold leading-snug sm:text-base lg:text-lg">
+              {p.line.en}
+            </p>
             {p.translate && p.line.es && (
               <p className="mt-1 border-t border-bubble-foreground/15 pt-1 text-[11px] italic leading-snug text-bubble-foreground/70 sm:text-sm">
                 {p.line.es}
@@ -160,8 +184,20 @@ function Character({
       data-mouth="closed"
     >
       <div className="character-body relative h-full w-full">
-        <img src={f.idle} alt={`${CHARACTERS[speaker].name}, barista`} className="character-frame" draggable={false} />
-        <img src={f.talk} alt="" aria-hidden className="character-frame" data-frame="talk" draggable={false} />
+        <img
+          src={f.idle}
+          alt={`${CHARACTERS[speaker].name}, barista`}
+          className="character-frame"
+          draggable={false}
+        />
+        <img
+          src={f.talk}
+          alt=""
+          aria-hidden
+          className="character-frame"
+          data-frame="talk"
+          draggable={false}
+        />
       </div>
       <div
         className={cn(

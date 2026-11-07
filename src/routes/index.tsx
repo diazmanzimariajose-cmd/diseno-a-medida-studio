@@ -32,7 +32,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Arte y Pasión Café – Interactive English Experience" },
       {
         property: "og:description",
-        content: "Aprende inglés con conversaciones de baristas, voces grabadas y traducción al español.",
+        content:
+          "Aprende inglés con conversaciones de baristas, voces grabadas y traducción al español.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -48,7 +49,11 @@ function Game() {
   const [translate, setTranslate] = useState(false);
   const [clipIds, setClipIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState(0);
-  const [editor, setEditor] = useState<{ open: boolean; conv: Conversation | null; isNew: boolean }>({
+  const [editor, setEditor] = useState<{
+    open: boolean;
+    conv: Conversation | null;
+    isNew: boolean;
+  }>({
     open: false,
     conv: null,
     isNew: false,
@@ -58,7 +63,8 @@ function Game() {
   const fileRef = useRef<HTMLInputElement>(null);
   const recorder = useRecorder();
 
-  const active = conversations.find((c) => c.id === activeId) ?? conversations[0] ?? FIRST_CONVERSATION;
+  const active =
+    conversations.find((c) => c.id === activeId) ?? conversations[0] ?? FIRST_CONVERSATION;
   const lines = useMemo(() => playableLines(active), [active]);
   const player = useConversationPlayer(lines);
 
@@ -212,7 +218,9 @@ function Game() {
               <h1 className="font-display text-xl font-bold tracking-tight sm:text-2xl">
                 ARTE Y PASIÓN CAFÉ
               </h1>
-              <p className="text-xs text-muted-foreground sm:text-sm">Interactive English Experience</p>
+              <p className="text-xs text-muted-foreground sm:text-sm">
+                Interactive English Experience
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -225,7 +233,10 @@ function Game() {
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
           <div
             ref={gameRef}
-            className={cn("flex min-w-0 flex-col gap-3", fullscreen && "h-screen bg-background p-3")}
+            className={cn(
+              "flex min-w-0 flex-col gap-3",
+              fullscreen && "h-screen bg-background p-3",
+            )}
           >
             <Stage
               scene={scene}
@@ -265,7 +276,13 @@ function Game() {
               onNextScene={() => setScene((s) => nextScene(s))}
               onFullscreen={toggleFullscreen}
             />
-            <input ref={fileRef} type="file" accept="audio/*" className="hidden" onChange={handleUpload} />
+            <input
+              ref={fileRef}
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              onChange={handleUpload}
+            />
           </div>
 
           <aside className="flex min-w-0 flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-panel">
@@ -321,7 +338,15 @@ function Game() {
 function CupMark() {
   return (
     <div className="relative grid size-11 place-items-center rounded-full bg-gold shadow-gold">
-      <svg viewBox="0 0 32 32" className="size-6 text-primary-foreground" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+      <svg
+        viewBox="0 0 32 32"
+        className="size-6 text-primary-foreground"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        aria-hidden
+      >
         <path d="M6 13h16v6a7 7 0 0 1-7 7h-2a7 7 0 0 1-7-7v-6Z" />
         <path d="M22 15h2.5a3 3 0 0 1 0 6H22" />
         <path className="animate-steam" d="M11 9c0-2 2-2 2-4" />

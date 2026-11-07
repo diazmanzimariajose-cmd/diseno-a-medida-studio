@@ -72,7 +72,12 @@ export function Transcript(p: Props) {
               </div>
               <p className="text-sm font-semibold leading-snug">{l.en}</p>
               {p.translate && l.es && (
-                <p className={cn("mt-1 text-[13px] italic leading-snug", now ? "text-bubble-foreground/70" : "text-muted-foreground")}>
+                <p
+                  className={cn(
+                    "mt-1 text-[13px] italic leading-snug",
+                    now ? "text-bubble-foreground/70" : "text-muted-foreground",
+                  )}
+                >
                   {l.es}
                 </p>
               )}

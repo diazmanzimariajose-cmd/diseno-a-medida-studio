@@ -52,12 +52,13 @@ export function ControlBar(p: Props) {
       </div>
       <div className="grid grid-cols-5 gap-1.5 sm:gap-2 [&>button]:w-full [&>button]:min-h-14 [&>button]:whitespace-normal [&>button]:text-center [&>button]:leading-tight [&>button]:px-1.5">
         {playing ? (
-          <Button variant="control-primary" onClick={p.onPause} >
+          <Button variant="control-primary" onClick={p.onPause}>
             <Pause className="fill-current" /> Pause
           </Button>
         ) : (
-          <Button variant="control-primary" onClick={p.onPlay} >
-            <Play className="fill-current" /> {p.status === "paused" ? "Resume" : "Play conversation"}
+          <Button variant="control-primary" onClick={p.onPlay}>
+            <Play className="fill-current" />{" "}
+            {p.status === "paused" ? "Resume" : "Play conversation"}
           </Button>
         )}
         <Button variant="control" onClick={p.onStop} disabled={p.status === "idle"}>
@@ -71,7 +72,11 @@ export function ControlBar(p: Props) {
         </Button>
         <Button
           variant={p.recording ? "record" : "control"}
-          className={p.recording ? "h-auto flex-col gap-1 px-3 py-2 text-[10px] font-bold uppercase tracking-wider [&_svg]:size-5" : ""}
+          className={
+            p.recording
+              ? "h-auto flex-col gap-1 px-3 py-2 text-[10px] font-bold uppercase tracking-wider [&_svg]:size-5"
+              : ""
+          }
           onClick={p.onRecord}
         >
           <Mic /> {p.recording ? `Stop · ${p.recordElapsed}s` : "Record audio"}

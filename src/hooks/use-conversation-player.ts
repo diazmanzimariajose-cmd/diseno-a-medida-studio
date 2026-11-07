@@ -65,7 +65,8 @@ export function useConversationPlayer(lines: DialogueLine[]) {
       c.audio.pause();
     }
     if (c.url) URL.revokeObjectURL(c.url);
-    if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    if (typeof window !== "undefined" && "speechSynthesis" in window)
+      window.speechSynthesis.cancel();
     cur.current = {};
   };
 
@@ -100,7 +101,8 @@ export function useConversationPlayer(lines: DialogueLine[]) {
           nextFlip = t + 70;
           setMouth(who, open);
         }
-        if (c.audio.duration && isFinite(c.audio.duration)) fraction = c.audio.currentTime / c.audio.duration;
+        if (c.audio.duration && isFinite(c.audio.duration))
+          fraction = c.audio.currentTime / c.audio.duration;
       } else if (c.ttsStart) {
         // Syllable-like flapping while the synthetic voice speaks.
         if (t > nextFlip) {
@@ -168,7 +170,9 @@ export function useConversationPlayer(lines: DialogueLine[]) {
       const audio = new Audio(url);
       cur.current = { audio, url };
       try {
-        const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        const Ctx =
+          window.AudioContext ||
+          (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
         ctxRef.current ??= new Ctx();
         await ctxRef.current.resume();
         const src = ctxRef.current.createMediaElementSource(audio);
@@ -269,10 +273,13 @@ export function useConversationPlayer(lines: DialogueLine[]) {
     lastProgress.current = 0;
   }, []);
 
-  useEffect(() => () => {
-    tokenRef.current += 1;
-    cleanupCurrent();
-  }, []);
+  useEffect(
+    () => () => {
+      tokenRef.current += 1;
+      cleanupCurrent();
+    },
+    [],
+  );
 
   // Warm up the voice list (Chrome loads it asynchronously).
   useEffect(() => {

@@ -14,8 +14,21 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { CHARACTERS, SCENES, type Conversation, type SceneId, type Speaker } from "@/lib/game/types";
-import { addLine, moveLine, other, removeLine, setStarter, updateLine } from "@/lib/game/conversation";
+import {
+  CHARACTERS,
+  SCENES,
+  type Conversation,
+  type SceneId,
+  type Speaker,
+} from "@/lib/game/types";
+import {
+  addLine,
+  moveLine,
+  other,
+  removeLine,
+  setStarter,
+  updateLine,
+} from "@/lib/game/conversation";
 import { getClip } from "@/lib/game/storage";
 import { useRecorder } from "@/hooks/use-recorder";
 
@@ -101,7 +114,8 @@ export function ConversationEditor(p: Props) {
         <DialogHeader className="sticky top-0 z-10 border-b border-border bg-header px-6 py-4">
           <DialogTitle className="font-display text-2xl">Edit dialogue</DialogTitle>
           <DialogDescription>
-            Write the English lines, add the Spanish translation and record or upload a voice for each one.
+            Write the English lines, add the Spanish translation and record or upload a voice for
+            each one.
           </DialogDescription>
         </DialogHeader>
 
@@ -109,11 +123,19 @@ export function ConversationEditor(p: Props) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="title">Activity title</Label>
-              <Input id="title" value={draft.title} onChange={(e) => set({ ...draft, title: e.target.value })} />
+              <Input
+                id="title"
+                value={draft.title}
+                onChange={(e) => set({ ...draft, title: e.target.value })}
+              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="topic">Situation</Label>
-              <Input id="topic" value={draft.topic} onChange={(e) => set({ ...draft, topic: e.target.value })} />
+              <Input
+                id="topic"
+                value={draft.topic}
+                onChange={(e) => set({ ...draft, topic: e.target.value })}
+              />
             </div>
             <div className="space-y-1.5">
               <Label>Who starts the conversation</Label>
@@ -130,7 +152,10 @@ export function ConversationEditor(p: Props) {
               <Label>Scene</Label>
               <Segmented
                 value={draft.scene}
-                options={(Object.keys(SCENES) as SceneId[]).map((s) => ({ value: s, label: SCENES[s].name }))}
+                options={(Object.keys(SCENES) as SceneId[]).map((s) => ({
+                  value: s,
+                  label: SCENES[s].name,
+                }))}
                 onChange={(v) => set({ ...draft, scene: v as SceneId })}
               />
             </div>
@@ -145,7 +170,9 @@ export function ConversationEditor(p: Props) {
                   key={l.id}
                   className={cn(
                     "rounded-xl border bg-secondary/40 p-3",
-                    l.speaker === "male" ? "border-l-4 border-l-male" : "border-l-4 border-l-female",
+                    l.speaker === "male"
+                      ? "border-l-4 border-l-male"
+                      : "border-l-4 border-l-female",
                   )}
                 >
                   <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -157,7 +184,12 @@ export function ConversationEditor(p: Props) {
                       onClick={() => set(updateLine(draft, l.id, { speaker: other(l.speaker) }))}
                       title="Switch speaker"
                     >
-                      <span className={cn("size-2 rounded-full", l.speaker === "male" ? "bg-male" : "bg-female")} />
+                      <span
+                        className={cn(
+                          "size-2 rounded-full",
+                          l.speaker === "male" ? "bg-male" : "bg-female",
+                        )}
+                      />
                       {CHARACTERS[l.speaker].name}
                     </Button>
                     <div className="ml-auto flex items-center gap-1">
@@ -168,7 +200,8 @@ export function ConversationEditor(p: Props) {
                         disabled={!!recordingId && !isRec}
                         onClick={() => toggleRecord(l.id)}
                       >
-                        {isRec ? <Square /> : <Mic />} {isRec ? `Stop ${recorder.elapsed}s` : hasClip ? "Re-record" : "Record"}
+                        {isRec ? <Square /> : <Mic />}{" "}
+                        {isRec ? `Stop ${recorder.elapsed}s` : hasClip ? "Re-record" : "Record"}
                       </Button>
                       <Button
                         size="sm"
@@ -183,7 +216,13 @@ export function ConversationEditor(p: Props) {
                       </Button>
                       {hasClip && (
                         <>
-                          <Button size="icon" variant="secondary" className="size-7" aria-label="Listen" onClick={() => preview(l.id)}>
+                          <Button
+                            size="icon"
+                            variant="secondary"
+                            className="size-7"
+                            aria-label="Listen"
+                            onClick={() => preview(l.id)}
+                          >
                             <Play />
                           </Button>
                           <Button
@@ -197,10 +236,22 @@ export function ConversationEditor(p: Props) {
                           </Button>
                         </>
                       )}
-                      <Button size="icon" variant="ghost" className="size-7" aria-label="Move up" onClick={() => set(moveLine(draft, i, -1))}>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="size-7"
+                        aria-label="Move up"
+                        onClick={() => set(moveLine(draft, i, -1))}
+                      >
                         <ArrowUp />
                       </Button>
-                      <Button size="icon" variant="ghost" className="size-7" aria-label="Move down" onClick={() => set(moveLine(draft, i, 1))}>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="size-7"
+                        aria-label="Move down"
+                        onClick={() => set(moveLine(draft, i, 1))}
+                      >
                         <ArrowDown />
                       </Button>
                       <Button
@@ -232,7 +283,11 @@ export function ConversationEditor(p: Props) {
                 </div>
               );
             })}
-            <Button variant="outline" className="w-full border-dashed" onClick={() => set(addLine(draft))}>
+            <Button
+              variant="outline"
+              className="w-full border-dashed"
+              onClick={() => set(addLine(draft))}
+            >
               <Plus /> Add line
             </Button>
           </div>
@@ -285,7 +340,9 @@ function Segmented({
           onClick={() => onChange(o.value)}
           className={cn(
             "flex-1 truncate rounded-md px-2 py-1.5 text-xs font-bold transition-colors",
-            value === o.value ? "bg-gold text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+            value === o.value
+              ? "bg-gold text-primary-foreground"
+              : "text-muted-foreground hover:text-foreground",
           )}
         >
           {o.label}

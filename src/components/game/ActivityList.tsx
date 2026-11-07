@@ -35,7 +35,9 @@ export function ActivityList(p: Props) {
             <span
               className={cn(
                 "grid size-7 shrink-0 place-items-center rounded-full text-xs font-extrabold",
-                c.id === p.activeId ? "bg-gold text-primary-foreground" : "bg-muted text-muted-foreground",
+                c.id === p.activeId
+                  ? "bg-gold text-primary-foreground"
+                  : "bg-muted text-muted-foreground",
               )}
             >
               {i + 1}

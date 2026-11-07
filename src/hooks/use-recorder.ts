@@ -42,10 +42,13 @@ export function useRecorder() {
     setRecording(false);
   }, []);
 
-  useEffect(() => () => {
-    if (timer.current) clearInterval(timer.current);
-    if (recRef.current?.state === "recording") recRef.current.stop();
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearInterval(timer.current);
+      if (recRef.current?.state === "recording") recRef.current.stop();
+    },
+    [],
+  );
 
   return { recording, elapsed, start, stop };
 }
