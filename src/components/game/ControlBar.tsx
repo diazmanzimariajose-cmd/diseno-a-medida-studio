@@ -57,7 +57,7 @@ export function ControlBar(p: Props) {
           </Button>
         ) : (
           <Button variant="control-primary" onClick={p.onPlay} >
-            <Play className="fill-current" /> {p.status === "paused" ? "Resume" : "Play"}
+            <Play className="fill-current" /> {p.status === "paused" ? "Resume" : "Play conversation"}
           </Button>
         )}
         <Button variant="control" onClick={p.onStop} disabled={p.status === "idle"}>
