@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+
+- Game rules (line order, starter/speaker flipping, scene cycling, progress) live in pure TS under `src/lib/game/` with vitest tests; components only render that state. Why: playback logic must stay testable without a browser.
+- Conversations persist in localStorage and audio clips in IndexedDB keyed by dialogue line id (`src/lib/game/storage.ts`). Why: works offline with no login; move to Lovable Cloud only if sharing across devices is requested.
+- Playback (`src/hooks/use-conversation-player.ts`) prefers a recorded clip per line and falls back to browser speechSynthesis; mouth frames are toggled via `data-mouth` on DOM nodes, not React state. Why: avoids 60fps re-renders.
+- Characters are two aligned image frames (idle + talking mouth composited onto the idle frame); body gestures are CSS keyframes keyed on `data-state`. Why: lip-sync without misalignment between frames.
