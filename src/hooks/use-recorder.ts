@@ -37,7 +37,7 @@ export function useRecorder() {
 
   const stop = useCallback(() => {
     if (timer.current) clearInterval(timer.current);
-    recRef.current?.state === "recording" && recRef.current.stop();
+    if (recRef.current?.state === "recording") recRef.current.stop();
     recRef.current = null;
     setRecording(false);
   }, []);
