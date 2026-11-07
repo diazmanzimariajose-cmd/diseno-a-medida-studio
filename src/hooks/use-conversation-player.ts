@@ -143,8 +143,11 @@ export function useConversationPlayer(lines: DialogueLine[]) {
     speakingRef.current = line.speaker;
     setSpeaking(line.speaker);
 
+    let done = false;
     const after = () => {
-      if (token !== tokenRef.current) return;
+      if (done || token !== tokenRef.current) return;
+      done = true;
+      if (cur.current.timer) clearTimeout(cur.current.timer);
       speakingRef.current = null;
       setSpeaking(null);
       setMouth(null, false);
@@ -206,6 +209,8 @@ export function useConversationPlayer(lines: DialogueLine[]) {
       after();
     };
     window.speechSynthesis.speak(u);
+    // Watchdog: some devices never fire "end" (no voices installed) — keep the scene moving.
+    cur.current.timer = setTimeout(after, Math.max(4000, text.length * 140));
   }, []);
 
   const play = useCallback(
