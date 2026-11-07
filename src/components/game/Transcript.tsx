@@ -31,10 +31,8 @@ export function Transcript(p: Props) {
         return (
           <li key={l.id} className={cn("flex", isMale ? "justify-start" : "justify-end")}>
             <div
-              role="button"
-              tabIndex={0}
               onClick={() => p.onSelect(i)}
-              onKeyDown={(e) => e.key === "Enter" && p.onSelect(i)}
+              aria-current={selected ? "true" : undefined}
               className={cn(
                 "group relative w-[88%] cursor-pointer rounded-2xl border px-3.5 py-2.5 text-left transition-all",
                 isMale ? "rounded-tl-sm" : "rounded-tr-sm",
