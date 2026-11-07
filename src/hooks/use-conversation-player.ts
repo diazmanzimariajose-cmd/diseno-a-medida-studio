@@ -44,7 +44,7 @@ export function useConversationPlayer(lines: DialogueLine[]) {
   const setMouth = (who: Speaker | null, open: boolean) => {
     (["male", "female"] as Speaker[]).forEach((s) => {
       const el = mouthEls.current[s];
-      if (el) el.dataset.mouth = s === who && open ? "open" : "closed";
+      if (el) el.dataset["mouth"] = s === who && open ? "open" : "closed";
     });
   };
 
@@ -90,7 +90,7 @@ export function useConversationPlayer(lines: DialogueLine[]) {
         c.analyser.getByteTimeDomainData(buf);
         let sum = 0;
         for (let i = 0; i < buf.length; i++) {
-          const v = (buf[i] - 128) / 128;
+          const v = ((buf[i] ?? 128) - 128) / 128;
           sum += v * v;
         }
         const rms = Math.sqrt(sum / buf.length);
@@ -135,9 +135,9 @@ export function useConversationPlayer(lines: DialogueLine[]) {
   const playLine = useCallback(async (i: number, token: number) => {
     const list = linesRef.current;
     if (token !== tokenRef.current) return;
-    if (i >= list.length) return finish();
-    cleanupCurrent();
     const line = list[i];
+    if (!line) return finish();
+    cleanupCurrent();
     indexRef.current = i;
     setIndex(i);
     speakingRef.current = line.speaker;

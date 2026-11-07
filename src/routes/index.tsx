@@ -10,7 +10,7 @@ import { useConversationPlayer } from "@/hooks/use-conversation-player";
 import { useRecorder } from "@/hooks/use-recorder";
 import { CHARACTERS, type Conversation, type SceneId } from "@/lib/game/types";
 import { blankConversation, nextScene, playableLines } from "@/lib/game/conversation";
-import { DEFAULT_CONVERSATIONS } from "@/lib/game/defaults";
+import { DEFAULT_CONVERSATIONS, FIRST_CONVERSATION } from "@/lib/game/defaults";
 import {
   deleteClip,
   listClipIds,
@@ -43,8 +43,8 @@ export const Route = createFileRoute("/")({
 
 function Game() {
   const [conversations, setConversations] = useState<Conversation[]>(DEFAULT_CONVERSATIONS);
-  const [activeId, setActiveId] = useState(DEFAULT_CONVERSATIONS[0].id);
-  const [scene, setScene] = useState<SceneId>(DEFAULT_CONVERSATIONS[0].scene);
+  const [activeId, setActiveId] = useState(FIRST_CONVERSATION.id);
+  const [scene, setScene] = useState<SceneId>(FIRST_CONVERSATION.scene);
   const [translate, setTranslate] = useState(false);
   const [clipIds, setClipIds] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState(0);
@@ -58,16 +58,17 @@ function Game() {
   const fileRef = useRef<HTMLInputElement>(null);
   const recorder = useRecorder();
 
-  const active = conversations.find((c) => c.id === activeId) ?? conversations[0];
+  const active = conversations.find((c) => c.id === activeId) ?? conversations[0] ?? FIRST_CONVERSATION;
   const lines = useMemo(() => playableLines(active), [active]);
   const player = useConversationPlayer(lines);
 
   // Load saved data on the client.
   useEffect(() => {
     const saved = loadConversations();
+    const first = saved[0] ?? FIRST_CONVERSATION;
     setConversations(saved);
-    setActiveId(saved[0].id);
-    setScene(saved[0].scene);
+    setActiveId(first.id);
+    setScene(first.scene);
     listClipIds()
       .then((ids) => setClipIds(new Set(ids)))
       .catch(() => undefined);
@@ -114,14 +115,23 @@ function Game() {
     : "No line selected";
 
   const handlePlay = () => {
-    if (!lines.length) return toast.info("Add some dialogue first with Edit dialogue.");
+    if (!lines.length) {
+      toast.info("Add some dialogue first with Edit dialogue.");
+      return;
+    }
     if (player.status === "paused") player.resume();
     else player.play(0);
   };
 
   const handleRecord = async () => {
-    if (recorder.recording) return recorder.stop();
-    if (!targetLine) return toast.info("Select a dialogue line to record.");
+    if (recorder.recording) {
+      recorder.stop();
+      return;
+    }
+    if (!targetLine) {
+      toast.info("Select a dialogue line to record.");
+      return;
+    }
     player.stop();
     const lineId = targetLine.id;
     try {
@@ -140,7 +150,10 @@ function Game() {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file || !targetLine) return;
-    if (!file.type.startsWith("audio/")) return toast.error("Please choose an audio file");
+    if (!file.type.startsWith("audio/")) {
+      toast.error("Please choose an audio file");
+      return;
+    }
     await setClip(targetLine.id, file);
     toast.success(`Audio linked to line ${selected + 1}`);
   };
@@ -179,9 +192,10 @@ function Game() {
     const c = conversations.find((x) => x.id === id);
     if (c) await Promise.all(c.lines.map((l) => setClip(l.id, null)));
     const list = conversations.filter((x) => x.id !== id);
-    persist(list);
-    setActiveId(list[0].id);
-    setScene(list[0].scene);
+    const first = list[0] ?? FIRST_CONVERSATION;
+    persist(list.length ? list : [first]);
+    setActiveId(first.id);
+    setScene(first.scene);
     setEditor({ open: false, conv: null, isNew: false });
     toast.success("Activity deleted");
   };
@@ -241,7 +255,10 @@ function Game() {
               onTranslate={() => setTranslate((t) => !t)}
               onRecord={handleRecord}
               onUpload={() => {
-                if (!targetLine) return toast.info("Select a dialogue line first.");
+                if (!targetLine) {
+                  toast.info("Select a dialogue line first.");
+                  return;
+                }
                 fileRef.current?.click();
               }}
               onEdit={() => openEditor(active, false)}

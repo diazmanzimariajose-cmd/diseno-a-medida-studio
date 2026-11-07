@@ -35,7 +35,8 @@ export function moveLine(conv: Conversation, index: number, dir: -1 | 1): Conver
   const target = index + dir;
   if (target < 0 || target >= conv.lines.length) return conv;
   const lines = [...conv.lines];
-  [lines[index], lines[target]] = [lines[target], lines[index]];
+  const [moved] = lines.splice(index, 1);
+  if (moved) lines.splice(target, 0, moved);
   return { ...conv, lines };
 }
 
@@ -69,7 +70,7 @@ export function blankConversation(): Conversation {
 
 export function nextScene(scene: SceneId): SceneId {
   const i = SCENE_ORDER.indexOf(scene);
-  return SCENE_ORDER[(i + 1) % SCENE_ORDER.length];
+  return SCENE_ORDER[(i + 1) % SCENE_ORDER.length] ?? "cafe";
 }
 
 /** Lines that actually get played, in their saved order (empty lines are skipped). */

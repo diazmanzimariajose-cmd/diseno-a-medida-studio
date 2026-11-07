@@ -15,7 +15,7 @@ function conv(
     en,
     es,
   }));
-  return { id, title, topic, scene, starter: lines[0].speaker, lines, updatedAt: 0 };
+  return { id, title, topic, scene, starter: lines[0]?.speaker ?? "male", lines, updatedAt: 0 };
 }
 
 export const DEFAULT_CONVERSATIONS: Conversation[] = [
@@ -73,3 +73,5 @@ export const DEFAULT_CONVERSATIONS: Conversation[] = [
     ["male", "Thank you for visiting Arte y Pasión Café. Come again soon!", "Gracias por visitar Arte y Pasión Café. ¡Vuelva pronto!"],
   ]),
 ];
+
+export const FIRST_CONVERSATION = DEFAULT_CONVERSATIONS[0] as Conversation;

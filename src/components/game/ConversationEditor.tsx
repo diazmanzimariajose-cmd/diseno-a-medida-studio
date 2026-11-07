@@ -79,13 +79,19 @@ export function ConversationEditor(p: Props) {
     const id = uploadFor.current;
     e.target.value = "";
     if (!file || !id) return;
-    if (!file.type.startsWith("audio/")) return toast.error("Please choose an audio file");
+    if (!file.type.startsWith("audio/")) {
+      toast.error("Please choose an audio file");
+      return;
+    }
     await p.onClipChange(id, file);
     toast.success("Audio uploaded");
   };
 
   const save = () => {
-    if (!draft.title.trim()) return toast.error("Give the activity a title");
+    if (!draft.title.trim()) {
+      toast.error("Give the activity a title");
+      return;
+    }
     p.onSave({ ...draft, updatedAt: Date.now() });
   };
 
